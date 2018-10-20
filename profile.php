@@ -57,9 +57,9 @@
       <div>
         <!-- post -->
 				<?php 
-					$post_sql = "SELECT * FROM posts WHERE user_id = {$id} ORDER BY created_at DESC";
+					$post_sql = "SELECT * FROM posts";
 					$result = $conn->query($post_sql);
-					
+					echo "EE" ; 					
 					if($result->num_rows > 0){
 						while($post = $result->fetch_assoc()){
 						?>	
@@ -70,7 +70,8 @@
           		</div>
           		<div class="panel-footer">
 							<?php 
-								$sql = "SELECT username FROM users WHERE id = ? LIMIT 1";
+								$sql = "SELECT * FROM posts ";
+
 								
 								$statement = $conn->prepare($sql);
 								$statement->bind_param('i',$post['user_id']);
@@ -79,7 +80,7 @@
 								$statement->bind_result($post_author);
 								$statement->fetch();
 							?>
-						<span>posted <?php echo $post['created_at']; ?> by <?php echo $username; ?></span> 
+						<span>posted <?php echo $post['create_at']; ?> by <?php echo $username; ?></span> 
 						<span class="pull-right"><a class="text-danger" href="php/delete-post.php?id=<?php echo $post['id']; ?>">[delete]</a></span>
 					</div>
         </div>
