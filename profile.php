@@ -4,14 +4,8 @@
 	check_auth();
 	db_connect();
 
-	$sql = "SELECT id, username,status,profile_image_url,location FROM users WHERE username = ?";
-	$statement = $conn->prepare($sql);
-	$statement->bind_param('s',$_GET['username']);
- 	$statement->execute();
-	$statement->store_result();
-	$statement->bind_result($id,$username,$status,$profile_image_url,$location);
-	$statement->fetch();
-
+	$sql = "SELECT id, username, status, profile_image_url, location FROM users WHERE username = 'asd'";
+	$statement = $conn->query($sql);
 ?>
 <!-- main -->
 <main class="container">
@@ -44,10 +38,21 @@
         <div class="media-left">
           <img src="img/my_avatar.png" class="media-object" style="width: 128px; height: 128px;">
         </div>
+			<?php
+				if ($statement->num_rows > 0) {	
+				while($users = $statement->fetch_assoc()) {
 
+				?>
        <div class="media-body">
-          <h2 class="media-heading"><?php echo $username; ?></h2>
-          <p>Status:<?php echo $status; ?>, Location: <?php echo $location; ?></p>
+          <h2 class="media-heading">User:<?php echo $users['username']; ?></h2>
+					<p>
+					<p> 
+          <p>Status:<?php echo $users['status']; ?>, Location: <?php echo $users['location']; 
+
+
+				}
+			}
+?></p>
         </div>
       </div>
 		  <!-- user profile -->
@@ -57,11 +62,11 @@
       <div>
         <!-- post -->
 				<?php 
-					$post_sql = "SELECT * FROM posts";
-					$result = $conn->query($post_sql);
-					echo "EE" ; 					
-					if($result->num_rows > 0){
-						while($post = $result->fetch_assoc()){
+					$post_sql = "SELECT * FROM posts WHERE user_id = 12";
+					$result1 = $conn->query($post_sql);
+					echo $users['id']; 			
+					if($result1->num_rows > 0){
+						while($post = $result1->fetch_assoc()){
 						?>	
 					
         		<div class="panel panel-default">
@@ -70,23 +75,30 @@
           		</div>
           		<div class="panel-footer">
 							<?php 
-								$sql = "SELECT * FROM posts ";
-
-								
-								$statement = $conn->prepare($sql);
-								$statement->bind_param('i',$post['user_id']);
-								$statement->execute();
-								$statement->store_result();
-								$statement->bind_result($post_author);
-								$statement->fetch();
-							?>
+/*								$sql = "SELECT username FROM users WHERE id = ? LIMIT 1";
+								$statement1 = $conn->prepare($sql);
+								$statement1->bind_param('i',$post['user_id']);
+								$statement1->execute();
+								$statement1->store_result();
+								$statement1->bind_result($post_author);
+								$statement1->fetch();
+	*/	
+							
+						//		while($users = $statement->fetch_assoc()) {
+								?>
 						<span>posted <?php echo $post['create_at']; ?> by <?php echo $username; ?></span> 
 						<span class="pull-right"><a class="text-danger" href="php/delete-post.php?id=<?php echo $post['id']; ?>">[delete]</a></span>
 					</div>
         </div>
 				
-			<?php } 
+			<?php 
+					} 
 			}
+			else{
+			echo "E";
+			}
+	
+		
 			?>
 			
         <!-- ./post -->

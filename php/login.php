@@ -25,9 +25,9 @@
 		}
 		else{
 //			redirect_to("/index.php?login_error=true");
-			redirect_to("/home.php");
 			$_SESSION['user_id'] = $id;
 			$_SESSION['user_username'] = $username;
+			redirect_to("/home.php");
 		}
 	}
 	else{
